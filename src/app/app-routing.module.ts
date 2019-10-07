@@ -1,21 +1,17 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { PreciosComponent } from './components/precios/precios.component';
-import { ProtegidaComponent } from './components/protegida/protegida.component';
-import { CallbackComponent } from './components/callback/callback.component';
-import { AuthGuard } from './services/auth.guard';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
-const routes:Routes = [
-    {path: 'home', component: HomeComponent},
-    {path: 'precios', component: PreciosComponent},
-    {path: 'protegida', component: ProtegidaComponent, canActivate: [AuthGuard]},
-    {path: 'callback', component: CallbackComponent},
-    {path: '**', pathMatch: 'full', redirectTo: 'home'}
+const routes: Routes = [
+  {
+    path: '',
+    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
+  }
+  //,{ path: 'agregar', loadChildren: './pages/agregar/agregar.module#AgregarPageModule' }
 ];
-
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
+  exports: [RouterModule]
 })
-export class AppRoutingModule{}
+export class AppRoutingModule {}
